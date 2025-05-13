@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* Custom color scheme for TikTok-Tuya Dashboard */
+:root {
+  --color-bg: #f8fafc;           /* Light background */
+  --color-bg-secondary: #e5e7eb; /* Light secondary bg */
+  --color-surface: #ffffff;      /* Card/Panel bg */
+  --color-text: #18181b;         /* Main text */
+  --color-text-secondary: #52525b; /* Secondary text */
+  --color-primary: #2563eb;      /* Primary blue */
+  --color-primary-hover: #1d4ed8;
+  --color-accent: #a21caf;       /* Accent purple */
+  --color-success: #22c55e;      /* Success green */
+  --color-error: #ef4444;        /* Error red */
+  --color-border: #d1d5db;       /* Border gray */
+  --color-toast-bg: #18181b;     /* Toast background */
+  --color-toast-text: #f4f4f5;   /* Toast text */
+  --font-main: 'Poppins', sans-serif;
+}
+
+.dark {
+  --color-bg: #18181b;           /* Dark background */
+  --color-bg-secondary: #27272a; /* Dark secondary bg */
+  --color-surface: #23272f;      /* Card/Panel bg */
+  --color-text: #f4f4f5;         /* Main text */
+  --color-text-secondary: #a1a1aa; /* Secondary text */
+  --color-primary: #60a5fa;      /* Primary blue (lighter) */
+  --color-primary-hover: #2563eb;
+  --color-accent: #c084fc;       /* Accent purple (lighter) */
+  --color-success: #4ade80;      /* Success green (lighter) */
+  --color-error: #f87171;        /* Error red (lighter) */
+  --color-border: #27272a;       /* Border gray (darker) */
+  --color-toast-bg: #f4f4f5;     /* Toast background (light) */
+  --color-toast-text: #18181b;   /* Toast text (dark) */
+  --font-main: 'Poppins', sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}

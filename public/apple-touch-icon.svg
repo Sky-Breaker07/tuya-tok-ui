@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7F00FF" />
+      <stop offset="50%" stop-color="#B100FF" />
+      <stop offset="100%" stop-color="#E100FF" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main rounded square background -->
+  <rect width="180" height="180" rx="45" fill="url(#gradient)" />
+  
+  <!-- Smart home icon -->
+  <g transform="translate(30, 30) scale(1.2)">
+    <!-- House outline -->
+    <path d="M60 25L15 60V110H105V60L60 25Z" stroke="white" stroke-width="6" stroke-linejoin="round" fill="none"/>
+    
+    <!-- Device icon -->
+    <rect x="45" y="70" width="30" height="40" rx="4" stroke="white" stroke-width="5" fill="none"/>
+    
+    <!-- Power button -->
+    <circle cx="60" cy="90" r="8" fill="white"/>
+    <path d="M60 82V90" stroke="#9D00FF" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Wave shapes (reminiscent of TikTok) -->
+    <path d="M25 65C35 58 50 68 60 68C70 68 85 58 95 65" stroke="white" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>
+    <path d="M25 80C35 73 50 83 60 83C70 83 85 73 95 80" stroke="white" stroke-width="3.5" stroke-linecap="round" opacity="0.4"/>
+  </g>
+  
+  <!-- TuyaTok text -->
+  <text x="90" y="155" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="white" text-anchor="middle">TuyaTok</text>
+</svg> 

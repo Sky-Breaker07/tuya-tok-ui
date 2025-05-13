@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7F00FF" />
+      <stop offset="100%" stop-color="#E100FF" />
+    </linearGradient>
+    <!-- Glow effect -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Main background -->
+  <rect width="1200" height="630" fill="url(#gradient)" />
+  
+  <!-- Grid pattern for background texture -->
+  <path d="M0 0H1200M0 100H1200M0 200H1200M0 300H1200M0 400H1200M0 500H1200M0 600H1200" stroke="white" stroke-width="0.5" stroke-opacity="0.1"/>
+  <path d="M100 0V630M200 0V630M300 0V630M400 0V630M500 0V630M600 0V630M700 0V630M800 0V630M900 0V630M1000 0V630M1100 0V630" stroke="white" stroke-width="0.5" stroke-opacity="0.1"/>
+  
+  <!-- Logo elements -->
+  <g transform="translate(200, 165) scale(1.2)">
+    <!-- House outline -->
+    <path d="M256 120L136 220V376H376V220L256 120Z" stroke="white" stroke-width="16" stroke-linejoin="round" fill="none"/>
+    
+    <!-- Smart device elements -->
+    <rect x="216" y="280" width="80" height="96" rx="8" stroke="white" stroke-width="12" fill="none"/>
+    
+    <!-- Power button -->
+    <circle cx="256" cy="328" r="20" fill="white"/>
+    <path d="M256 300V320" stroke="#7F00FF" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Pulse animation circles -->
+    <circle cx="256" cy="210" r="24" fill="white" opacity="0.7"/>
+    <circle cx="256" cy="210" r="40" stroke="white" stroke-width="4" stroke-dasharray="12 8" opacity="0.5"/>
+  </g>
+  
+  <!-- Brand text -->
+  <text x="600" y="280" font-family="Arial, sans-serif" font-weight="bold" font-size="100" fill="white" text-anchor="middle">TuyaTok</text>
+  
+  <!-- Tagline text -->
+  <text x="600" y="350" font-family="Arial, sans-serif" font-size="32" fill="white" text-anchor="middle" opacity="0.9">Smart Home Automation with TikTok</text>
+  
+  <!-- Wave shapes (reminiscent of TikTok) -->
+  <path d="M400 430C500 390 600 450 700 450C800 450 900 390 1000 430" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+  <path d="M400 480C500 440 600 500 700 500C800 500 900 440 1000 480" stroke="white" stroke-width="10" stroke-linecap="round" opacity="0.4"/>
+</svg> 
