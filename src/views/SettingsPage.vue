@@ -2,11 +2,14 @@
   <div class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]" style="font-family: var(--font-main)">
     <Header />
     <div class="max-w-5xl mx-auto py-10 px-4">
-      <h1 class="text-2xl font-bold mb-4">Settings & Device Control</h1>
-      <p class="mb-6 text-[var(--color-text-secondary)]">Manage your Tuya smart switches, set activation durations, and perform manual controls.</p>
+      <!-- Page Header -->
+      <div class="mb-10">
+        <h1 class="text-3xl font-bold mb-3">Settings & Device Control</h1>
+        <p class="text-[var(--color-text-secondary)]">Manage your Tuya smart switches, set event mappings, and configure connection options.</p>
+      </div>
       
       <!-- API Connection Status -->
-      <div v-if="apiConnectionError" class="mb-6 p-4 bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-lg">
+      <div v-if="apiConnectionError" class="mb-8 p-4 bg-red-100 dark:bg-red-900 border border-red-300 dark:border-red-700 rounded-lg">
         <h3 class="font-bold text-red-800 dark:text-red-200 mb-2">API Connection Error</h3>
         <p class="text-red-700 dark:text-red-300">{{ apiConnectionError }}</p>
         <button 
@@ -17,36 +20,58 @@
         </button>
       </div>
       
-      <div v-if="devicesLoading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-        <LoadingSkeleton v-for="i in 6" :key="i" width="100%" height="120px" />
+      <!-- Devices Section -->
+      <div class="mb-10">
+        <h2 class="text-2xl font-bold mb-5 flex items-center">
+          <IconifyIcon icon="mdi:devices" class="mr-2 text-[var(--color-primary)]" /> 
+          Your Devices
+        </h2>
+        
+        <div v-if="devicesLoading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+          <LoadingSkeleton v-for="i in 6" :key="i" width="100%" height="120px" />
+        </div>
+        <div v-else-if="devicesError" class="text-center py-8 text-[var(--color-error)]">
+          <div>{{ devicesError }}</div>
+          <button @click="devicesStore.fetchDevices()" class="mt-4 px-4 py-2 rounded bg-[var(--color-primary)] text-white font-semibold hover:bg-[var(--color-primary-hover)] transition">Retry</button>
+        </div>
+        <div v-else-if="devices.length === 0" class="text-center py-8 text-[var(--color-text-secondary)] bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] shadow">
+          <IconifyIcon icon="mdi:devices-off" class="text-4xl mx-auto mb-2" />
+          <p>No devices found.</p>
+          <p class="mt-2 text-sm">Make sure your API server is running at: {{ apiUrl }}</p>
+        </div>
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+          <DeviceCard
+            v-for="device in devices"
+            :key="device.id"
+            :device="device"
+            :isActive="activeDeviceId === device.id"
+            @on="handleOn(device.id)"
+            @off="handleOff(device.id)"
+            @test="handleTest(device.id)"
+            @view-details="openDeviceDetails"
+          />
+        </div>
       </div>
-      <div v-else-if="devicesError" class="text-center py-8 text-[var(--color-error)]">
-        <div>{{ devicesError }}</div>
-        <button @click="devicesStore.fetchDevices()" class="mt-4 px-4 py-2 rounded bg-[var(--color-primary)] text-white font-semibold hover:bg-[var(--color-primary-hover)] transition">Retry</button>
-      </div>
-      <div v-else-if="devices.length === 0" class="text-center py-8 text-[var(--color-text-secondary)]">
-        <p>No devices found.</p>
-        <p class="mt-2 text-sm">Make sure your API server is running at: {{ apiUrl }}</p>
-      </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-        <DeviceCard
-          v-for="device in devices"
-          :key="device.id"
-          :device="device"
-          :isActive="activeDeviceId === device.id"
-          @on="handleOn(device.id)"
-          @off="handleOff(device.id)"
-          @test="handleTest(device.id)"
-          @view-details="openDeviceDetails"
-        />
-      </div>
-      <div v-if="devicesLoading">
-        <LoadingSkeleton width="100%" height="180px" />
-      </div>
-      <div ref="settingsPanelAnchor">
-        <SettingsPanel />
+      
+      <!-- Settings Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left column -->
+        <div>
+          <div class="mb-8">
+            <ConnectionSettingsPanel />
+          </div>
+          <div ref="settingsPanelAnchor">
+            <SettingsPanel />
+          </div>
+        </div>
+        
+        <!-- Right column -->
+        <div>
+          <DeviceMappingPanel />
+        </div>
       </div>
     </div>
+    
     <ConfirmModal
       :open="errorModalOpen"
       :title="'Operation Failed'"
@@ -70,9 +95,12 @@
 import { ref, computed, onMounted, nextTick } from 'vue';
 import { useDevicesStore } from '../stores/devices';
 import { useToast } from 'vue-toastification';
+import { Icon as IconifyIcon } from '@iconify/vue';
 import Header from '../components/Header.vue';
 import DeviceCard from '../components/DeviceCard.vue';
 import SettingsPanel from '../components/SettingsPanel.vue';
+import ConnectionSettingsPanel from '../components/ConnectionSettingsPanel.vue';
+import DeviceMappingPanel from '../components/DeviceMappingPanel.vue';
 import LoadingSkeleton from '../components/LoadingSkeleton.vue';
 import ConfirmModal from '../components/ConfirmModal.vue';
 import DeviceDetailsModal from '../components/DeviceDetailsModal.vue';
