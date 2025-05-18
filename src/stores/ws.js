@@ -20,8 +20,9 @@ export const useWsStore = defineStore('ws', () => {
     // Get the WebSocket URL based on environment
     const getWebSocketUrl = () => {
       if (process.env.NODE_ENV === 'production') {
-        // In production, use the same host
-        return undefined; // Socket.IO will use the current host automatically
+        // In production, use secure WebSocket with the same host
+        const protocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
+        return protocol + window.location.host;
       } else {
         console.log('Using development WebSocket URL:', import.meta.env.VITE_WS_URL);
         // In development, use the configured URL or default to localhost
@@ -31,7 +32,11 @@ export const useWsStore = defineStore('ws', () => {
 
     socket = io(getWebSocketUrl(), {
       autoConnect: true,
-      transports: ['websocket'],
+      transports: ['websocket', 'polling'], // Add polling as fallback
+      path: '/socket.io/', // Explicitly set the path
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      timeout: 20000
     });
 
     // Connection events

@@ -4,6 +4,11 @@
   "routes": {
     "/**": "index.html"
   },
+  "proxies": {
+    "/socket.io/": {
+      "origin": "${WS_URL:-http://localhost:$PORT}/socket.io/"
+    }
+  },
   "https_only": true,
   "headers": {
     "/**": {
