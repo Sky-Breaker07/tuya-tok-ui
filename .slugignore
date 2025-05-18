@@ -1,0 +1,33 @@
+# Development files
+.vscode
+.git
+.github
+.gitignore
+.editorconfig
+.eslintrc
+.eslintignore
+.prettierrc
+.prettierignore
+
+# Tests
+tests
+__tests__
+test
+*.test.js
+*.spec.js
+
+# Documentation
+docs
+*.md
+!README.md
+!README-HEROKU.md
+
+# Build artifacts
+dist
+build
+node_modules
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log 
