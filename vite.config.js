@@ -17,4 +17,10 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  preview: {
+    allowedHosts: [
+      'tuya-tok-ee90ae0d0bfa.herokuapp.com',
+      '.herokuapp.com'  // Allow all Heroku subdomains
+    ]
+  },
 })
