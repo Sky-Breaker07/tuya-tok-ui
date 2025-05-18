@@ -6,7 +6,9 @@
   },
   "proxies": {
     "/socket.io/": {
-      "origin": "${WS_URL:-http://localhost:$PORT}/socket.io/"
+      "origin": "${WS_URL:-https://${HEROKU_APP_NAME}.herokuapp.com}/socket.io/",
+      "websocket": true,
+      "timeout": 300
     }
   },
   "https_only": true,

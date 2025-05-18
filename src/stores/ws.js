@@ -10,6 +10,8 @@ export const useWsStore = defineStore('ws', () => {
   const roomInfo = ref(null);
   const eventCounts = ref({ likes: 0, comments: 0, gifts: 0, follows: 0 });
   let socket = null;
+  let reconnectAttempts = 0;
+  const maxReconnectAttempts = 5;
 
   function connect() {
     if (socket) return;
@@ -20,9 +22,9 @@ export const useWsStore = defineStore('ws', () => {
     // Get the WebSocket URL based on environment
     const getWebSocketUrl = () => {
       if (process.env.NODE_ENV === 'production') {
-        // In production, use secure WebSocket with the same host
-        const protocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
-        return protocol + window.location.host;
+        // In production, use the same host but without explicit protocol
+        // Socket.IO will determine the appropriate protocol
+        return window.location.origin;
       } else {
         console.log('Using development WebSocket URL:', import.meta.env.VITE_WS_URL);
         // In development, use the configured URL or default to localhost
@@ -30,20 +32,26 @@ export const useWsStore = defineStore('ws', () => {
       }
     };
 
-    socket = io(getWebSocketUrl(), {
+    const socketOptions = {
       autoConnect: true,
-      transports: ['websocket', 'polling'], // Add polling as fallback
-      path: '/socket.io/', // Explicitly set the path
-      reconnectionAttempts: 5,
+      transports: ['polling', 'websocket'], // Start with polling, upgrade to websocket
+      path: '/socket.io/',
+      reconnectionAttempts: maxReconnectAttempts,
       reconnectionDelay: 1000,
-      timeout: 20000
-    });
+      timeout: 20000,
+      forceNew: true,
+      withCredentials: true
+    };
+
+    console.log('Connecting to WebSocket server at:', getWebSocketUrl(), 'with options:', socketOptions);
+    socket = io(getWebSocketUrl(), socketOptions);
 
     // Connection events
     socket.on('connect', () => {
       connected.value = true;
       error.value = null;
-      console.log('Connected to WebSocket server');
+      reconnectAttempts = 0;
+      console.log('Connected to WebSocket server with ID:', socket.id);
     });
     
     socket.on('connection-acknowledged', (data) => {
@@ -57,8 +65,18 @@ export const useWsStore = defineStore('ws', () => {
     });
     
     socket.on('connect_error', (err) => {
+      reconnectAttempts++;
       error.value = err?.message || 'WebSocket connection error';
       console.error('WebSocket connection error:', err);
+      
+      if (reconnectAttempts >= maxReconnectAttempts) {
+        console.log('Maximum reconnection attempts reached, falling back to polling');
+        // If we've tried websocket and it's failing, force polling only
+        if (socket.io.opts.transports.includes('websocket')) {
+          socket.io.opts.transports = ['polling'];
+          socket.disconnect().connect();
+        }
+      }
     });
 
     // TikTok events
