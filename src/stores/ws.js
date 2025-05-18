@@ -23,6 +23,7 @@ export const useWsStore = defineStore('ws', () => {
         // In production, use the same host
         return undefined; // Socket.IO will use the current host automatically
       } else {
+        console.log('Using development WebSocket URL:', import.meta.env.VITE_WS_URL);
         // In development, use the configured URL or default to localhost
         return import.meta.env.VITE_WS_URL || 'http://localhost:8800';
       }
